@@ -5,7 +5,7 @@ Topology and manifold primitives for computational geometry.
 ## What it provides
 
 - **`Simplex`**: Oriented simplices with boundary computation (chain complex `dd = 0`).
-- **`Manifold` trait**: `exp_map`, `log_map`, `parallel_transport`, `project`. Implemented by [`hyperball`](https://github.com/arclabs561/hyp) (Poincare ball) and usable by any Riemannian geometry crate.
+- **`Manifold` trait**: `exp_map`, `log_map`, `parallel_transport`, `project`. Implemented by [`hyperball`](https://github.com/arclabs561/hyperball) (Poincare ball) and usable by any Riemannian geometry crate.
 
 ## Usage
 
