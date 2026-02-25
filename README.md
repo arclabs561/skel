@@ -47,6 +47,12 @@ impl Manifold for MySphere {
 }
 ```
 
+## Examples
+
+```bash
+cargo run --example simplex_boundary  # boundary computation, dd=0 chain complex identity
+```
+
 ## Tests
 
 ```bash
