@@ -18,4 +18,16 @@ pub trait Manifold {
         y: &ArrayView1<f64>,
         v: &ArrayView1<f64>,
     ) -> Array1<f64>;
+
+    /// Project a point in ambient space back onto the manifold.
+    ///
+    /// Numerical drift during ODE integration (repeated exp_map steps) can push
+    /// points slightly off the manifold.  This method corrects that drift.
+    ///
+    /// The default implementation is the identity (assumes the point is already on
+    /// the manifold), which is correct for unconstrained Euclidean spaces.
+    /// Manifolds with constraints (spheres, Poincare balls, etc.) should override.
+    fn project(&self, x: &ArrayView1<f64>) -> Array1<f64> {
+        x.to_owned()
+    }
 }
