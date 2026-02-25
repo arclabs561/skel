@@ -1,29 +1,59 @@
 # skel
 
-Topology/shape primitives.
+Topology and manifold primitives for computational geometry.
 
-`skel` is a small Rust crate with a few topological building blocks (e.g. simplices) and a minimal
-`Manifold` trait that other geometry crates can implement.
+## What it provides
 
-## Contents
+- **`Simplex`**: Oriented simplices with boundary computation (chain complex `dd = 0`).
+- **`Manifold` trait**: `exp_map`, `log_map`, `parallel_transport`, `project`. Implemented by [`hyperball`](https://github.com/arclabs561/hyp) (Poincare ball) and usable by any Riemannian geometry crate.
 
-- **`topology`**: `Simplex` and basic combinatorics (e.g. oriented boundaries).
-- **`manifold`**: `Manifold` trait (`exp_map`, `log_map`, `parallel_transport`).
-- **`flow`**: placeholder scaffolding for flows on complexes.
+## Usage
 
-## Quickstart
+```toml
+[dependencies]
+skel = "0.1.0"
+```
 
 ```rust
 use skel::topology::Simplex;
 
+// A triangle [0, 2, 5] has 3 oriented edges as boundary.
 let s = Simplex::new_canonical(vec![0, 2, 5]).unwrap();
 assert_eq!(s.dim(), 2);
 assert_eq!(s.boundary().len(), 3);
 ```
 
-## Status
+Implementing a manifold:
 
-Experimental: the API is small but not yet treated as stable.
+```rust
+use skel::Manifold;
+use ndarray::{Array1, ArrayView1};
+
+struct MySphere;
+
+impl Manifold for MySphere {
+    fn exp_map(&self, x: &ArrayView1<f64>, v: &ArrayView1<f64>) -> Array1<f64> {
+        // geodesic step from x in direction v
+        todo!()
+    }
+    fn log_map(&self, x: &ArrayView1<f64>, y: &ArrayView1<f64>) -> Array1<f64> {
+        // inverse: tangent vector from x toward y
+        todo!()
+    }
+    fn parallel_transport(&self, x: &ArrayView1<f64>, y: &ArrayView1<f64>, v: &ArrayView1<f64>) -> Array1<f64> {
+        // move tangent vector v from T_x to T_y along geodesic
+        todo!()
+    }
+}
+```
+
+## Tests
+
+```bash
+cargo test -p skel
+```
+
+12 tests covering simplex construction, boundary orientation, chain complex identity (`dd = 0`), and error handling.
 
 ## License
 

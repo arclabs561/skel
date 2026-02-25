@@ -128,6 +128,78 @@ mod tests {
         }
     }
 
+    #[test]
+    fn new_checked_accepts_sorted_unique() {
+        let s = Simplex::new_checked(vec![0, 2, 5]).unwrap();
+        assert_eq!(s.vertices(), &[0, 2, 5]);
+        assert_eq!(s.dim(), 2);
+    }
+
+    #[test]
+    fn new_canonical_sorts_unsorted_input() {
+        let s = Simplex::new_canonical(vec![5, 0, 2]).unwrap();
+        assert_eq!(s.vertices(), &[0, 2, 5]);
+    }
+
+    #[test]
+    fn zero_simplex_has_empty_boundary() {
+        let s = Simplex::new_checked(vec![7]).unwrap();
+        assert_eq!(s.dim(), 0);
+        assert!(s.boundary().is_empty());
+    }
+
+    #[test]
+    fn one_simplex_boundary_has_two_oriented_faces() {
+        let s = Simplex::new_checked(vec![1, 3]).unwrap();
+        let bd = s.boundary();
+        assert_eq!(bd.len(), 2);
+        // i=0: remove vertex 1 -> face [3], sign = +1
+        assert_eq!(bd[0].0, 1);
+        assert_eq!(bd[0].1.vertices(), &[3]);
+        // i=1: remove vertex 3 -> face [1], sign = -1
+        assert_eq!(bd[1].0, -1);
+        assert_eq!(bd[1].1.vertices(), &[1]);
+    }
+
+    #[test]
+    fn triangle_boundary_orientation_signs() {
+        let s = Simplex::new_canonical(vec![0, 1, 2]).unwrap();
+        let bd = s.boundary();
+        assert_eq!(bd.len(), 3);
+        // Signs alternate: +1, -1, +1
+        assert_eq!(bd[0].0, 1);
+        assert_eq!(bd[0].1.vertices(), &[1, 2]);
+        assert_eq!(bd[1].0, -1);
+        assert_eq!(bd[1].1.vertices(), &[0, 2]);
+        assert_eq!(bd[2].0, 1);
+        assert_eq!(bd[2].1.vertices(), &[0, 1]);
+    }
+
+    #[test]
+    fn simplex_equality_and_hash_consistency() {
+        use std::collections::HashSet;
+        let s1 = Simplex::new_canonical(vec![5, 0, 2]).unwrap();
+        let s2 = Simplex::new_canonical(vec![0, 2, 5]).unwrap();
+        let s3 = Simplex::new_canonical(vec![1, 3, 5]).unwrap();
+        assert_eq!(s1, s2);
+        let mut set = HashSet::new();
+        set.insert(s1.clone());
+        assert!(set.contains(&s2));
+        assert!(!set.contains(&s3));
+    }
+
+    #[test]
+    fn error_display_format() {
+        assert_eq!(
+            SimplexError::Empty.to_string(),
+            "simplex must have at least one vertex"
+        );
+        assert_eq!(
+            SimplexError::DuplicateVertex(42).to_string(),
+            "simplex has duplicate vertex 42"
+        );
+    }
+
     proptest! {
         #[test]
         fn canonical_simplex_has_sorted_unique_vertices(mut vs in proptest::collection::vec(0usize..1000, 1..8)) {
@@ -138,6 +210,40 @@ mod tests {
             let s = Simplex::new_checked(vs.clone()).unwrap();
             prop_assert_eq!(s.vertices(), vs.as_slice());
             prop_assert_eq!(s.dim(), vs.len() - 1);
+        }
+
+        #[test]
+        fn boundary_boundary_cancels(mut vs in proptest::collection::vec(0usize..100, 2..6)) {
+            // The chain complex identity: for each face in bd(sigma), compute its boundary,
+            // collect all (sign * subsign, sub-face) pairs, and verify they cancel pairwise.
+            vs.sort_unstable();
+            vs.dedup();
+            prop_assume!(vs.len() >= 2);
+            let s = Simplex::new_checked(vs).unwrap();
+            let bd1 = s.boundary();
+
+            // Collect all signed sub-faces from bd(bd(s))
+            let mut signed_subfaces: Vec<(i32, Vec<usize>)> = Vec::new();
+            for (sign1, face) in &bd1 {
+                for (sign2, subface) in face.boundary() {
+                    signed_subfaces.push((sign1 * sign2, subface.vertices().to_vec()));
+                }
+            }
+
+            // Group by vertex set and verify cancellation (sum of signs = 0 for each).
+            signed_subfaces.sort_by(|a, b| a.1.cmp(&b.1));
+            let mut i = 0;
+            while i < signed_subfaces.len() {
+                let key = &signed_subfaces[i].1;
+                let mut sum = 0i32;
+                let mut j = i;
+                while j < signed_subfaces.len() && signed_subfaces[j].1 == *key {
+                    sum += signed_subfaces[j].0;
+                    j += 1;
+                }
+                prop_assert_eq!(sum, 0, "dd != 0 for subface {:?}", key);
+                i = j;
+            }
         }
     }
 }
