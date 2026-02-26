@@ -22,7 +22,28 @@
 //! # Ownership
 //!
 //! `skel` owns this trait definition.  Concrete implementations (hyperbolic,
-//! spherical, Euclidean, etc.) live in downstream crates (e.g. `hyp`).
+//! spherical, Euclidean, etc.) live in downstream crates (e.g. `hyperball`).
+//!
+//! # Motivation
+//!
+//! The `exp`/`log`/`transport` surface is exactly the interface required by
+//! **Riemannian Flow Matching** (RFM): the ODE integrator steps along
+//! geodesics via `exp`, computes velocity fields via `log`, and moves
+//! tangent vectors between steps via `parallel_transport`.  Any geometry
+//! that implements this trait can be used as the base manifold for RFM
+//! without changes to the flow-matching code.
+//!
+//! # References
+//!
+//! - Chen & Lipman (2023), "Riemannian Flow Matching on General
+//!   Geometries" -- the exp/log/transport surface defined here is
+//!   exactly the manifold interface RFM requires.
+//! - de Kruiff et al. (2024), "Pullback Flow Matching on Data Manifolds"
+//!   -- an alternative when closed-form exp/log is unavailable; works
+//!   with learned pullback maps instead.
+//! - Sherry & Smets (2025), "Flow Matching on Lie Groups" -- suggests
+//!   a `LieGroup` subtrait as a future direction, exploiting group
+//!   structure for more efficient exp/log and transport.
 
 use ndarray::{Array1, ArrayView1};
 

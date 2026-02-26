@@ -31,11 +31,33 @@
 //! a cycle, so the quotient \(H_k = \ker \partial_k / \operatorname{im} \partial_{k+1}\)
 //! is meaningful.
 //!
+//! # Why this matters for machine learning
+//!
+//! The boundary operator is the core algebraic primitive underlying
+//! **Topological Deep Learning** (TDL).  Adjacency matrices between
+//! \(k\)-simplices are derived from boundary matrices, and the Hodge
+//! Laplacian \(L_k = B_k^\top B_k + B_{k+1} B_{k+1}^\top\) (where
+//! \(B_k\) is the matrix form of \(\partial_k\)) is the natural
+//! generalization of the graph Laplacian to higher-order domains.
+//! The \(\partial\partial = 0\) identity ensures that homology is
+//! well-defined, which is the algebraic foundation for persistent
+//! homology and all downstream topological features used in TDL.
+//!
 //! # References
 //!
 //! - Edelsbrunner & Harer, *Computational Topology: An Introduction*.
 //! - Hatcher, *Algebraic Topology*, Chapter 2 (free online).
-//! - "Topological simplification of single cell data" (2026 PhD topic).
+//! - Papillon et al. (2023), "Architectures of Topological Deep Learning:
+//!   A Survey of Message-Passing Topological Neural Networks" --
+//!   comprehensive taxonomy of neural networks on simplicial/cell/CW
+//!   complexes; motivates the boundary operator as the core ML primitive.
+//! - Hajij et al. (2022), "Topological Deep Learning: Going Beyond Graph
+//!   Data" -- formalizes simplicial complexes as higher-order relational
+//!   structures for deep learning, introducing a unified TDL framework.
+//! - Yang & Isufi (2023), "Convolutional Learning on Simplicial Complexes"
+//!   -- derives adjacency and Hodge Laplacian matrices from boundary
+//!   operators; shows that spectral filters on these matrices generalize
+//!   GCNs to simplicial domains.
 
 /// An oriented \(k\)-simplex represented by a strictly increasing list of vertex indices.
 ///
