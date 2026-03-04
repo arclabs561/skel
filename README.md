@@ -1,5 +1,9 @@
 # skel
 
+[![crates.io](https://img.shields.io/crates/v/skel.svg)](https://crates.io/crates/skel)
+[![Documentation](https://docs.rs/skel/badge.svg)](https://docs.rs/skel)
+[![CI](https://github.com/arclabs561/skel/actions/workflows/ci.yml/badge.svg)](https://github.com/arclabs561/skel/actions/workflows/ci.yml)
+
 Topology and manifold primitives for computational geometry.
 
 ## Problem
