@@ -349,13 +349,13 @@ mod tests {
         let s = Simplex::new_checked(vec![0, 1, 2, 3]).unwrap();
         let bd = s.boundary();
         assert_eq!(bd.len(), 4);
-        assert_eq!(bd[0].0, 1);   // remove v0 -> [1,2,3]
+        assert_eq!(bd[0].0, 1); // remove v0 -> [1,2,3]
         assert_eq!(bd[0].1.vertices(), &[1, 2, 3]);
-        assert_eq!(bd[1].0, -1);  // remove v1 -> [0,2,3]
+        assert_eq!(bd[1].0, -1); // remove v1 -> [0,2,3]
         assert_eq!(bd[1].1.vertices(), &[0, 2, 3]);
-        assert_eq!(bd[2].0, 1);   // remove v2 -> [0,1,3]
+        assert_eq!(bd[2].0, 1); // remove v2 -> [0,1,3]
         assert_eq!(bd[2].1.vertices(), &[0, 1, 3]);
-        assert_eq!(bd[3].0, -1);  // remove v3 -> [0,1,2]
+        assert_eq!(bd[3].0, -1); // remove v3 -> [0,1,2]
         assert_eq!(bd[3].1.vertices(), &[0, 1, 2]);
     }
 
@@ -385,7 +385,10 @@ mod tests {
         let face_verts: Vec<&[usize]> = bd.iter().map(|(_, f)| f.vertices()).collect();
         for i in 0..face_verts.len() {
             for j in (i + 1)..face_verts.len() {
-                assert_ne!(face_verts[i], face_verts[j], "duplicate faces at {i} and {j}");
+                assert_ne!(
+                    face_verts[i], face_verts[j],
+                    "duplicate faces at {i} and {j}"
+                );
             }
         }
     }
@@ -517,7 +520,10 @@ mod tests {
             let bd = s.boundary();
             let sign_sum: i32 = bd.iter().map(|(s, _)| *s).sum();
             let expected = if n % 2 == 1 { 1 } else { 0 };
-            assert_eq!(sign_sum, expected, "sign sum mismatch for {n}-vertex simplex");
+            assert_eq!(
+                sign_sum, expected,
+                "sign sum mismatch for {n}-vertex simplex"
+            );
         }
     }
 
@@ -717,6 +723,9 @@ mod manifold_tests {
         let y = array![3.0, 4.0];
         let v = m.log_map(&x.view(), &y.view());
         let dist: f64 = v.iter().map(|x| x * x).sum::<f64>().sqrt();
-        assert!((dist - 5.0).abs() < 1e-12, "distance should be 5.0, got {dist}");
+        assert!(
+            (dist - 5.0).abs() < 1e-12,
+            "distance should be 5.0, got {dist}"
+        );
     }
 }

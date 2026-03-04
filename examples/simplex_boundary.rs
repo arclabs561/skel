@@ -46,7 +46,10 @@ fn main() {
     // A 3-simplex (tetrahedron): 4 boundary faces
     let tet = Simplex::new_canonical(vec![0, 1, 2, 3]).unwrap();
     let bd = tet.boundary();
-    println!("3-simplex [0,1,2,3] (tetrahedron): {} boundary faces", bd.len());
+    println!(
+        "3-simplex [0,1,2,3] (tetrahedron): {} boundary faces",
+        bd.len()
+    );
     for (sign, face) in &bd {
         println!("  {:+} * {:?}", sign, face.vertices());
     }

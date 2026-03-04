@@ -136,7 +136,10 @@ fn main() {
 
     // 3. Interpolation along the geodesic
     println!("\n3. Geodesic interpolation from x to y");
-    println!("{:>6}  {:>10}  {:>10}  {:>10}", "t", "point_x", "point_y", "||p||");
+    println!(
+        "{:>6}  {:>10}  {:>10}  {:>10}",
+        "t", "point_x", "point_y", "||p||"
+    );
     println!("{:-<6}  {:-<10}  {:-<10}  {:-<10}", "", "", "", "");
 
     for i in 0..=8 {
@@ -157,10 +160,7 @@ fn main() {
         "{:>10}  {:>12}  {:>12}  {:>8}",
         "angle", "geodesic", "chord", "ratio"
     );
-    println!(
-        "{:-<10}  {:-<12}  {:-<12}  {:-<8}",
-        "", "", "", ""
-    );
+    println!("{:-<10}  {:-<12}  {:-<12}  {:-<8}", "", "", "", "");
 
     let angles = [
         std::f64::consts::PI / 12.0,
@@ -176,13 +176,7 @@ fn main() {
         let q = array![theta.cos(), theta.sin()];
         let g = geodesic_distance(&x.view(), &q.view());
         let c = chord_distance(&x.view(), &q.view());
-        println!(
-            "{:>10.4}  {:>12.6}  {:>12.6}  {:>7.4}x",
-            theta,
-            g,
-            c,
-            g / c
-        );
+        println!("{:>10.4}  {:>12.6}  {:>12.6}  {:>7.4}x", theta, g, c, g / c);
     }
     println!("   (geodesic >= chord, equality only at angle = 0)");
 

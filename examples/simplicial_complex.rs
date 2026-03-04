@@ -51,7 +51,7 @@ fn tetrahedron_surface() -> (Vec<Simplex>, Vec<Simplex>, Vec<Simplex>) {
 /// Build the boundary matrix B_k as a dense i32 matrix (rows x cols),
 /// mapping k-simplices (columns) to (k-1)-simplices (rows).
 fn boundary_matrix(
-    domain: &[Simplex],  // k-simplices (columns)
+    domain: &[Simplex],   // k-simplices (columns)
     codomain: &[Simplex], // (k-1)-simplices (rows)
 ) -> Vec<Vec<i32>> {
     // Map each codomain simplex to its row index
@@ -236,8 +236,14 @@ fn main() {
     let b2_betti = dim_c2 - rank_b2;
 
     println!("Ranks:");
-    println!("  rank(B_1) = {}  (of {}x{} matrix)", rank_b1, dim_c0, dim_c1);
-    println!("  rank(B_2) = {}  (of {}x{} matrix)", rank_b2, dim_c1, dim_c2);
+    println!(
+        "  rank(B_1) = {}  (of {}x{} matrix)",
+        rank_b1, dim_c0, dim_c1
+    );
+    println!(
+        "  rank(B_2) = {}  (of {}x{} matrix)",
+        rank_b2, dim_c1, dim_c2
+    );
 
     println!("\nBetti numbers (by rank-nullity):");
     println!("  b_0 = {}  (connected components)", b0);
@@ -245,6 +251,8 @@ fn main() {
     println!("  b_2 = {}  (independent 2-cycles)", b2_betti);
 
     println!("\nExpected for a sphere (S^2): b_0=1, b_1=0, b_2=1");
-    println!("Euler characteristic: b_0 - b_1 + b_2 = {} (should be 2 for S^2)",
-        b0 as i32 - b1_betti as i32 + b2_betti as i32);
+    println!(
+        "Euler characteristic: b_0 - b_1 + b_2 = {} (should be 2 for S^2)",
+        b0 as i32 - b1_betti as i32 + b2_betti as i32
+    );
 }

@@ -49,10 +49,7 @@ fn dist(a: &[f64; 2], b: &[f64; 2]) -> f64 {
 
 /// Build the 1-skeleton and 2-skeleton of the Vietoris-Rips complex at
 /// the given epsilon threshold.
-fn rips_complex(
-    points: &[[f64; 2]],
-    epsilon: f64,
-) -> (Vec<Simplex>, Vec<Simplex>, Vec<Simplex>) {
+fn rips_complex(points: &[[f64; 2]], epsilon: f64) -> (Vec<Simplex>, Vec<Simplex>, Vec<Simplex>) {
     let n = points.len();
 
     // 0-simplices
@@ -151,11 +148,7 @@ fn rank(mat: &[Vec<i32>]) -> usize {
 }
 
 /// Compute Betti numbers b_0, b_1 from the chain complex C_2 -> C_1 -> C_0.
-fn betti_numbers(
-    vertices: &[Simplex],
-    edges: &[Simplex],
-    triangles: &[Simplex],
-) -> (usize, usize) {
+fn betti_numbers(vertices: &[Simplex], edges: &[Simplex], triangles: &[Simplex]) -> (usize, usize) {
     let rank_b1 = if edges.is_empty() {
         0
     } else {
@@ -177,7 +170,10 @@ fn betti_numbers(
 
 fn main() {
     let points = two_blobs();
-    println!("Vietoris-Rips complex: {} points from two clusters", points.len());
+    println!(
+        "Vietoris-Rips complex: {} points from two clusters",
+        points.len()
+    );
     println!("Cluster centers: (0,0) and (4,0), radii 0.3 / 0.7 / 1.0\n");
 
     let epsilons = [0.5, 1.0, 1.5, 2.5, 5.0];
