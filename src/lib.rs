@@ -39,12 +39,14 @@
 //! |--------------|----------|
 //! | [`topology`] | [`Simplex`](topology::Simplex), boundary operator, orientation |
 //! | [`manifold`] | [`Manifold`] trait (exp/log/transport/project) |
+//! | [`optim`]    | Riemannian SGD, Adam, geodesic distance |
 //! | [`flow`]     | Cohomological flow scaffolding (WIP) |
 //! | [`locus`]    | Back-compat shim; prefer `skel::Manifold` |
 
 pub mod flow;
 pub mod locus; // back-compat shim (prefer `skel::Manifold`)
 pub mod manifold;
+pub mod optim;
 pub mod topology;
 
 // Ergonomic re-exports.
