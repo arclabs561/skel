@@ -72,7 +72,7 @@ impl Manifold for UnitCircle {
 }
 ```
 
-Concrete implementations: [`hyperball`](https://github.com/arclabs561/hyperball) (Poincare ball, Lorentz hyperboloid). The trait is used by [`flowmatch`](https://github.com/arclabs561/flowmatch) for Riemannian ODE integration.
+Concrete implementations exist for the Poincare ball and Lorentz hyperboloid.
 
 ## Simplex
 
@@ -90,24 +90,6 @@ assert_eq!(tri.boundary().len(), 3); // three oriented edges
 cargo run --example simplex_boundary
 ```
 
-```text
-2-simplex [0,1,2]: boundary =
-  +1 * [1, 2]
-  -1 * [0, 2]
-  +1 * [0, 1]
-
-Chain complex check: d(d([0,1,2])) should cancel to zero:
-  vertex coefficients: {[2]: 0, [1]: 0, [0]: 0}
-  dd = 0? true
-
-3-simplex [0,1,2,3] (tetrahedron): 4 boundary faces
-  +1 * [1, 2, 3]
-  -1 * [0, 2, 3]
-  +1 * [0, 1, 3]
-  -1 * [0, 1, 2]
-  dd = 0? true
-```
-
 ## Tests
 
 ```bash
@@ -118,26 +100,10 @@ cargo test -p skel
 
 ## References
 
-`skel` spans two complementary areas: combinatorial topology (simplices, boundary operators, homology) and differential geometry (the Manifold trait for Riemannian computation).
-
-### Combinatorial topology
-
-- Edelsbrunner & Harer, *Computational Topology: An Introduction* -- standard reference for simplicial homology and persistent homology.
-- Hatcher, *Algebraic Topology*, Chapter 2 -- rigorous treatment of simplicial complexes and chain complexes (free online).
-- Papillon et al. (2023), "Architectures of Topological Deep Learning" -- taxonomy of neural networks on simplicial complexes; the boundary operator is the core primitive.
-- Hajij et al. (2022), "Topological Deep Learning: Going Beyond Graph Data" -- unified framework for learning on higher-order structures.
-- Yang & Isufi (2023), "Convolutional Learning on Simplicial Complexes" -- Hodge Laplacian derived from boundary operators.
-
-### Differential geometry / Riemannian computation
-
-- Chen & Lipman (2023), "Riemannian Flow Matching on General Geometries" -- the exp/log/transport interface is exactly the Manifold trait surface.
-- de Kruiff et al. (2024), "Pullback Flow Matching on Data Manifolds" -- alternative when closed-form exp/log is unavailable.
-- Sherry & Smets (2025), "Flow Matching on Lie Groups" -- suggests a LieGroup subtrait as a future direction.
-
-### Cohomological flows
-
-- Girish et al. (2025), "Persistent Topological Structures and Cohomological Flows" -- theoretical foundation for the CohomologicalFlow trait.
-- Maggs et al. (2023), "Simplicial Representation Learning with Neural k-Forms" -- concrete architectures using cochains and coboundary operators.
+- Edelsbrunner & Harer, *Computational Topology: An Introduction*
+- Hatcher, *Algebraic Topology*, Chapter 2 (simplicial complexes and chain complexes)
+- Chen & Lipman (2023), "Riemannian Flow Matching on General Geometries"
+- Papillon et al. (2023), "Architectures of Topological Deep Learning"
 
 ## License
 
