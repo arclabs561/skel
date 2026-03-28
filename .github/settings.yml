@@ -2,7 +2,7 @@
 # https://github.com/repository-settings/app
 
 repository:
-  description: "Topology/shape primitives"
+  description: "Manifold and topology primitives"
   homepage: "https://github.com/arclabs561/skel"
   private: false
   has_issues: true
