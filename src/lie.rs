@@ -135,7 +135,7 @@ pub fn log_so3(r: &RotationMatrix) -> AxisAngle {
         // R + R^T = 2 * cos(theta) * I + 2 * (1 - cos(theta)) * (n n^T)
         // where n is the rotation axis.
         let sym = [r[0] + 1.0, r[4] + 1.0, r[8] + 1.0]; // diagonal of R + I
-        // Pick the largest diagonal element for numerical stability.
+                                                        // Pick the largest diagonal element for numerical stability.
         let (idx, &max_val) = sym
             .iter()
             .enumerate()
@@ -156,11 +156,7 @@ pub fn log_so3(r: &RotationMatrix) -> AxisAngle {
                 }
             }
         }
-        return [
-            axis[0] * theta,
-            axis[1] * theta,
-            axis[2] * theta,
-        ];
+        return [axis[0] * theta, axis[1] * theta, axis[2] * theta];
     }
 
     // General case: theta / (2 * sin(theta)) * skew(R)
@@ -178,7 +174,11 @@ pub fn log_so3(r: &RotationMatrix) -> AxisAngle {
 /// At `t = 0` returns `r0`; at `t = 1` returns `r1`.
 ///
 /// Computed as `r0 * exp(t * log(r0^T * r1))`.
-pub fn geodesic_interpolation_so3(r0: &RotationMatrix, r1: &RotationMatrix, t: f64) -> RotationMatrix {
+pub fn geodesic_interpolation_so3(
+    r0: &RotationMatrix,
+    r1: &RotationMatrix,
+    t: f64,
+) -> RotationMatrix {
     // delta = r0^T * r1
     let r0t = transpose3(r0);
     let delta = mat_mul3(&r0t, r1);
@@ -396,11 +396,11 @@ mod tests {
     fn exp_log_roundtrip_so3() {
         // Various axis-angle vectors covering different regimes.
         let cases: &[AxisAngle] = &[
-            [0.1, 0.2, 0.3],         // small angle
-            [1.0, 0.0, 0.0],         // 1 radian about x
-            [0.0, 2.5, 0.0],         // large angle about y
-            [0.0, 0.0, 0.1],         // small about z
-            [0.5, -0.3, 0.8],        // general
+            [0.1, 0.2, 0.3],  // small angle
+            [1.0, 0.0, 0.0],  // 1 radian about x
+            [0.0, 2.5, 0.0],  // large angle about y
+            [0.0, 0.0, 0.1],  // small about z
+            [0.5, -0.3, 0.8], // general
         ];
 
         for omega in cases {
@@ -419,7 +419,10 @@ mod tests {
     fn identity_maps_to_zero() {
         let omega = log_so3(&IDENTITY_SO3);
         let norm = (omega[0] * omega[0] + omega[1] * omega[1] + omega[2] * omega[2]).sqrt();
-        assert!(norm < TOL, "log(I) should be zero, got {omega:?} (norm = {norm})");
+        assert!(
+            norm < TOL,
+            "log(I) should be zero, got {omega:?} (norm = {norm})"
+        );
     }
 
     #[test]
@@ -451,8 +454,7 @@ mod tests {
             );
 
             // Determinant should be +1.
-            let det = r[0] * (r[4] * r[8] - r[5] * r[7])
-                - r[1] * (r[3] * r[8] - r[5] * r[6])
+            let det = r[0] * (r[4] * r[8] - r[5] * r[7]) - r[1] * (r[3] * r[8] - r[5] * r[6])
                 + r[2] * (r[3] * r[7] - r[4] * r[6]);
             assert!(
                 (det - 1.0).abs() < 1e-9,
@@ -503,7 +505,7 @@ mod tests {
         let cases: &[Twist] = &[
             [0.1, 0.2, 0.3, 1.0, -0.5, 0.2],
             [0.0, 0.0, 0.0, 1.0, 2.0, 3.0], // pure translation
-            [1.0, 0.0, 0.0, 0.0, 0.0, 0.0],  // pure rotation
+            [1.0, 0.0, 0.0, 0.0, 0.0, 0.0], // pure rotation
             [0.5, -0.3, 0.8, 0.1, 0.2, 0.3],
         ];
 
@@ -517,13 +519,12 @@ mod tests {
                 "rotation roundtrip failed for xi = {xi:?}, dist = {}",
                 mat_dist(&p.0, &p2.0)
             );
-            let t_dist: f64 = p
-                .1
-                .iter()
-                .zip(p2.1.iter())
-                .map(|(a, b)| (a - b) * (a - b))
-                .sum::<f64>()
-                .sqrt();
+            let t_dist: f64 =
+                p.1.iter()
+                    .zip(p2.1.iter())
+                    .map(|(a, b)| (a - b) * (a - b))
+                    .sum::<f64>()
+                    .sqrt();
             assert!(
                 t_dist < 1e-9,
                 "translation roundtrip failed for xi = {xi:?}, dist = {t_dist}"
