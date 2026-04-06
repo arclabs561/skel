@@ -12,6 +12,8 @@ readme = "README.md"
 keywords = ["topology", "simplex", "tda"]
 categories = ["algorithms", "mathematics", "science"]
 
+[workspace]
+
 [dependencies]
 ndarray = "0.16"
 
