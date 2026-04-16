@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 //! Riemannian optimization on the unit sphere S^2.
 //!
 //! Demonstrates Riemannian SGD finding the point on S^2 closest to a target,

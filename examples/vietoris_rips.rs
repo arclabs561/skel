@@ -1,3 +1,4 @@
+#![allow(clippy::needless_range_loop)]
 //! Vietoris-Rips simplicial complex from a 2D point cloud.
 //!
 //! Generates ~30 points sampled from two clusters, then for a range of
