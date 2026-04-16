@@ -1,5 +1,9 @@
 //! Riemannian optimization algorithms.
 //!
+//! **Deprecated**: this module has moved to [`descend::riemannian`] (enable the
+//! `riemannian` feature in the `descend` crate). The symbols here remain for
+//! backward compatibility but will be removed in a future release.
+//!
 //! Gradient-based optimization on manifolds differs from Euclidean optimization
 //! in two ways:
 //!
@@ -23,6 +27,9 @@ use crate::Manifold;
 
 /// Riemannian SGD step.
 ///
+/// **Deprecated**: use `descend::riemannian::riemannian_sgd_step` instead
+/// (enable the `riemannian` feature in `descend`).
+///
 /// Given a point on the manifold and a Euclidean gradient, computes:
 ///
 /// 1. Project the gradient to the tangent space (via `log_map` identity, then
@@ -32,6 +39,7 @@ use crate::Manifold;
 /// 3. Project back to the manifold (numerical correction).
 ///
 /// Returns the updated point on the manifold.
+#[deprecated(since = "0.1.5", note = "use descend::riemannian::riemannian_sgd_step (feature = \"riemannian\")")]
 pub fn riemannian_sgd_step(
     manifold: &dyn Manifold,
     point: &ArrayView1<f64>,
@@ -48,9 +56,13 @@ pub fn riemannian_sgd_step(
 
 /// State for the Riemannian Adam optimizer.
 ///
+/// **Deprecated**: use `descend::riemannian::RiemannianAdamState` instead
+/// (enable the `riemannian` feature in `descend`).
+///
 /// Moment estimates (`m` and `v`) live in the tangent space at `prev_point`.
 /// On each step they are parallel-transported to the current tangent space
 /// before being updated.
+#[deprecated(since = "0.1.5", note = "use descend::riemannian::RiemannianAdamState (feature = \"riemannian\")")]
 pub struct RiemannianAdamState {
     /// First moment estimate (in tangent space at `prev_point`).
     pub m: Array1<f64>,
@@ -77,6 +89,9 @@ impl RiemannianAdamState {
 
 /// Riemannian Adam step (Becigneul & Ganea, 2019).
 ///
+/// **Deprecated**: use `descend::riemannian::riemannian_adam_step` instead
+/// (enable the `riemannian` feature in `descend`).
+///
 /// Extends Adam to Riemannian manifolds:
 ///
 /// 1. Parallel-transport previous moments from `T_{prev} M` to `T_{current} M`.
@@ -86,6 +101,7 @@ impl RiemannianAdamState {
 ///
 /// Returns the updated point on the manifold.  The `state` is modified in place
 /// with the new moments and previous point.
+#[deprecated(since = "0.1.5", note = "use descend::riemannian::riemannian_adam_step (feature = \"riemannian\")")]
 pub fn riemannian_adam_step(
     manifold: &dyn Manifold,
     point: &ArrayView1<f64>,
@@ -141,9 +157,13 @@ pub fn riemannian_adam_step(
 
 /// Geodesic distance between two points on a manifold.
 ///
+/// **Deprecated**: use `descend::riemannian::geodesic_distance` instead
+/// (enable the `riemannian` feature in `descend`).
+///
 /// Computed as `||log_x(y)||`, the norm of the tangent vector at `x` that
 /// points toward `y`.  This equals the length of the shortest geodesic
 /// connecting `x` and `y` (assuming `y` is within the injectivity radius).
+#[deprecated(since = "0.1.5", note = "use descend::riemannian::geodesic_distance (feature = \"riemannian\")")]
 pub fn geodesic_distance(manifold: &dyn Manifold, x: &ArrayView1<f64>, y: &ArrayView1<f64>) -> f64 {
     let v = manifold.log_map(x, y);
     v.iter().map(|vi| vi * vi).sum::<f64>().sqrt()
