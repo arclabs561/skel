@@ -1,6 +1,6 @@
 //! Riemannian optimization algorithms.
 //!
-//! **Deprecated**: this module has moved to [`descend::riemannian`] (enable the
+//! **Deprecated**: this module has moved to `descend::riemannian` (enable the
 //! `riemannian` feature in the `descend` crate). The symbols here remain for
 //! backward compatibility but will be removed in a future release.
 //!
@@ -39,7 +39,10 @@ use crate::Manifold;
 /// 3. Project back to the manifold (numerical correction).
 ///
 /// Returns the updated point on the manifold.
-#[deprecated(since = "0.1.5", note = "use descend::riemannian::riemannian_sgd_step (feature = \"riemannian\")")]
+#[deprecated(
+    since = "0.1.5",
+    note = "use descend::riemannian::riemannian_sgd_step (feature = \"riemannian\")"
+)]
 pub fn riemannian_sgd_step(
     manifold: &dyn Manifold,
     point: &ArrayView1<f64>,
@@ -62,7 +65,10 @@ pub fn riemannian_sgd_step(
 /// Moment estimates (`m` and `v`) live in the tangent space at `prev_point`.
 /// On each step they are parallel-transported to the current tangent space
 /// before being updated.
-#[deprecated(since = "0.1.5", note = "use descend::riemannian::RiemannianAdamState (feature = \"riemannian\")")]
+#[deprecated(
+    since = "0.1.5",
+    note = "use descend::riemannian::RiemannianAdamState (feature = \"riemannian\")"
+)]
 pub struct RiemannianAdamState {
     /// First moment estimate (in tangent space at `prev_point`).
     pub m: Array1<f64>,
@@ -101,7 +107,10 @@ impl RiemannianAdamState {
 ///
 /// Returns the updated point on the manifold.  The `state` is modified in place
 /// with the new moments and previous point.
-#[deprecated(since = "0.1.5", note = "use descend::riemannian::riemannian_adam_step (feature = \"riemannian\")")]
+#[deprecated(
+    since = "0.1.5",
+    note = "use descend::riemannian::riemannian_adam_step (feature = \"riemannian\")"
+)]
 #[allow(clippy::too_many_arguments)]
 pub fn riemannian_adam_step(
     manifold: &dyn Manifold,
@@ -164,7 +173,10 @@ pub fn riemannian_adam_step(
 /// Computed as `||log_x(y)||`, the norm of the tangent vector at `x` that
 /// points toward `y`.  This equals the length of the shortest geodesic
 /// connecting `x` and `y` (assuming `y` is within the injectivity radius).
-#[deprecated(since = "0.1.5", note = "use descend::riemannian::geodesic_distance (feature = \"riemannian\")")]
+#[deprecated(
+    since = "0.1.5",
+    note = "use descend::riemannian::geodesic_distance (feature = \"riemannian\")"
+)]
 pub fn geodesic_distance(manifold: &dyn Manifold, x: &ArrayView1<f64>, y: &ArrayView1<f64>) -> f64 {
     let v = manifold.log_map(x, y);
     v.iter().map(|vi| vi * vi).sum::<f64>().sqrt()

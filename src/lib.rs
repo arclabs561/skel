@@ -35,15 +35,20 @@
 //!
 //! ## Modules
 //!
-//! | Module       | Contents |
-//! |--------------|----------|
-//! | [`topology`] | [`Simplex`](topology::Simplex), boundary operator, orientation |
-//! | [`manifold`] | [`Manifold`] trait (exp/log/transport/project) |
-//! | [`lie`]      | SO(3) and SE(3) Lie group exp/log/geodesic interpolation |
-//! | [`optim`]    | Riemannian SGD, Adam, geodesic distance (deprecated -- moved to `descend::riemannian`) |
-//! | [`flow`]     | Cohomological flow scaffolding (WIP) |
-//! | [`locus`]    | Back-compat shim; prefer `skel::Manifold` |
+//! | Module            | Contents |
+//! |-------------------|----------|
+//! | [`topology`]      | [`Simplex`](topology::Simplex), boundary operator, orientation |
+//! | [`complex`]       | [`SimplicialComplex`](complex::SimplicialComplex) -- collection of simplices closed under faces |
+//! | [`filtration`]    | [`Filtration`](filtration::Filtration), [`OrdF64`](filtration::OrdF64) -- ordered complex for persistent homology |
+//! | [`vietoris_rips`] | [`vietoris_rips`](vietoris_rips::vietoris_rips) -- VR filtration from a distance matrix |
+//! | [`manifold`]      | [`Manifold`] trait (exp/log/transport/project) |
+//! | [`lie`]           | SO(3) and SE(3) Lie group exp/log/geodesic interpolation |
+//! | [`optim`]         | Riemannian SGD, Adam, geodesic distance (deprecated -- moved to `descend::riemannian`) |
+//! | [`flow`]          | Cohomological flow scaffolding (WIP) |
+//! | [`locus`]         | Back-compat shim; prefer `skel::Manifold` |
 
+pub mod complex;
+pub mod filtration;
 pub mod flow;
 pub mod lie;
 pub mod locus; // back-compat shim (prefer `skel::Manifold`)
@@ -51,6 +56,7 @@ pub mod manifold;
 #[allow(deprecated)]
 pub mod optim;
 pub mod topology;
+pub mod vietoris_rips;
 
 // Ergonomic re-exports.
 //
