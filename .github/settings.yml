@@ -2,7 +2,7 @@
 # https://github.com/repository-settings/app
 
 repository:
-  description: "Manifold and topology primitives"
+  description: "Topology and manifold primitives for TDA and geometric ML"
   homepage: "https://github.com/arclabs561/skel"
   private: false
   has_issues: true
