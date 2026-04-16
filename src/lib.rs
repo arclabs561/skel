@@ -48,6 +48,7 @@ pub mod flow;
 pub mod lie;
 pub mod locus; // back-compat shim (prefer `skel::Manifold`)
 pub mod manifold;
+#[allow(deprecated)]
 pub mod optim;
 pub mod topology;
 
