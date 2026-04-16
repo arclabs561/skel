@@ -1,5 +1,18 @@
 //! Combinatorial topology primitives: simplices, boundary operator, orientation.
 //!
+//! ## Foundation for topological data analysis (TDA)
+//!
+//! These types provide the combinatorial substrate for persistent homology.
+//! They are infrastructure waiting for a consumer, not abandoned code.
+//!
+//! The intended consumer is the `phlite` crate, which implements the persistence
+//! algorithm (matrix reduction of boundary matrices to compute barcodes).
+//! `skel::topology` provides the chain complex structure; `phlite` provides the
+//! algebraic reduction that turns it into topological features.
+//!
+//! The design is deliberately minimal: `Simplex` + `boundary()` + the
+//! `∂∂ = 0` identity are all that a persistence algorithm needs from this layer.
+//!
 //! A **\(k\)-simplex** is the convex hull of \(k{+}1\) affinely independent points,
 //! but for combinatorial purposes we represent it as an ordered tuple of vertex
 //! indices.  The canonical representation keeps vertices in **strictly increasing**
