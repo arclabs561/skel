@@ -1,3 +1,4 @@
+#![allow(clippy::needless_range_loop)]
 //! Simplicial complex: boundary matrices, dd=0, and Betti numbers.
 //!
 //! Builds the surface of a tetrahedron (4 triangles, 6 edges, 4 vertices),
