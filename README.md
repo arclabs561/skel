@@ -3,11 +3,8 @@
 [![crates.io](https://img.shields.io/crates/v/skel.svg)](https://crates.io/crates/skel)
 [![Documentation](https://docs.rs/skel/badge.svg)](https://docs.rs/skel)
 
-Topology and manifold primitives for topological data analysis (TDA) and
-geometric machine learning. Build simplicial complexes, compute boundary
-matrices for persistent homology (via lophat/phlite), construct Vietoris-Rips
-filtrations from point clouds, and work with Riemannian manifolds (exp/log
-maps, parallel transport, geodesic optimization).
+Topology and manifold primitives for topological data analysis and
+geometric ML.
 
 ## Modules
 
