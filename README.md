@@ -4,18 +4,22 @@
 [![Documentation](https://docs.rs/skel/badge.svg)](https://docs.rs/skel)
 
 Topology and manifold primitives for topological data analysis (TDA) and
-geometric machine learning.
+geometric machine learning. Build simplicial complexes, compute boundary
+matrices for persistent homology (via lophat/phlite), construct Vietoris-Rips
+filtrations from point clouds, and work with Riemannian manifolds (exp/log
+maps, parallel transport, geodesic optimization).
 
 ## Modules
 
 | Module | What it does |
 |--------|-------------|
-| `topology` | Oriented simplices, boundary operator, chain complex identity |
-| `complex` | Simplicial complex container with star, link, skeleton, Euler characteristic |
-| `filtration` | Filtered simplicial complexes, boundary matrix output for persistence algorithms |
-| `vietoris_rips` | Vietoris-Rips complex construction from distance matrices |
+| `topology` | Oriented simplices, boundary operator, chain complex identity (`dd=0`) |
+| `complex` | Simplicial complex with star, link, skeleton, f-vector, Euler characteristic |
+| `filtration` | Filtered simplicial complexes, boundary matrix output for persistence |
+| `vietoris_rips` | Vietoris-Rips complex from distance matrices |
 | `Manifold` trait | Riemannian geometry: exp, log, parallel transport, projection |
 | `lie` | SO(3), SE(3) Lie groups |
+| `optim` | Riemannian SGD and Adam on manifolds |
 
 ## TDA quickstart
 
@@ -57,14 +61,10 @@ assert_eq!(k.euler_characteristic(), 1);
 
 ## Manifold trait
 
-Any Riemannian geometry implements exp, log, parallel transport, and projection:
-
-```rust
-use skel::Manifold;
-```
-
+Any Riemannian geometry implements exp, log, parallel transport, and projection.
 Concrete implementations exist for the Poincare ball, Lorentz hyperboloid,
-SO(3), and SE(3).
+SO(3), and SE(3). The `optim` module provides Riemannian SGD and Adam that
+work with any `Manifold` implementation.
 
 ## Boundary matrix format
 
@@ -72,6 +72,18 @@ SO(3), and SE(3).
 columns of (coefficient, row_index) pairs. This is compatible with
 [lophat](https://crates.io/crates/lophat) and
 [phlite](https://crates.io/crates/phlite) for computing persistent homology.
+
+## Examples
+
+All examples in `examples/`. Run with `cargo run --example <name>`.
+
+| Example | What it shows |
+|---------|---------------|
+| `simplex_boundary` | Oriented boundary operator, `dd=0` identity for triangle and tetrahedron |
+| `simplicial_complex` | Boundary matrices, Betti numbers of a tetrahedron surface (S^2) |
+| `vietoris_rips` | Build VR complexes from a 2D point cloud, sweep epsilon to see topology change |
+| `manifold_circle` | `Manifold` impl for S^1: exp/log round-trip, geodesic interpolation |
+| `riemannian_optimization` | Riemannian SGD and Adam converging on S^2 |
 
 ## License
 
