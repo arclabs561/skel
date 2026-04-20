@@ -281,9 +281,9 @@ mod tests {
             })
             .collect();
         for sigma in &all_simplices {
-            let val_sigma = filt.value(sigma).unwrap().clone();
+            let val_sigma = *filt.value(sigma).unwrap();
             for (_sign, face) in sigma.boundary() {
-                let val_face = filt.value(&face).unwrap().clone();
+                let val_face = *filt.value(&face).unwrap();
                 assert!(
                     val_face <= val_sigma,
                     "face {:?} (val {:?}) > coface {:?} (val {:?})",
@@ -343,9 +343,9 @@ mod tests {
                 .flat_map(|k| filt.complex().simplices_of_dim(k).cloned().collect::<Vec<_>>())
                 .collect();
             for sigma in &all {
-                let val_sigma = filt.value(sigma).unwrap().clone();
+                let val_sigma = *filt.value(sigma).unwrap();
                 for (_sign, face) in sigma.boundary() {
-                    let val_face = filt.value(&face).unwrap().clone();
+                    let val_face = *filt.value(&face).unwrap();
                     prop_assert!(val_face <= val_sigma,
                         "face {:?} > coface {:?}", face.vertices(), sigma.vertices());
                 }
