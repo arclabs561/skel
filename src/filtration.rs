@@ -256,7 +256,7 @@ mod tests {
     #[test]
     fn ord_f64_roundtrip() {
         for v in &[
-            -3.14,
+            -std::f64::consts::PI,
             -1.0,
             -0.0,
             0.0,
