@@ -16,7 +16,7 @@ geometric ML.
 | `vietoris_rips` | Vietoris-Rips complex from distance matrices |
 | `Manifold` trait | Riemannian geometry: exp, log, parallel transport, projection |
 | `lie` | SO(3), SE(3) Lie groups |
-| `optim` | Riemannian SGD and Adam on manifolds |
+| `optim` | Riemannian SGD and Adam on manifolds (deprecated, moved to `descend::riemannian`) |
 
 ## TDA quickstart
 
@@ -60,8 +60,9 @@ assert_eq!(k.euler_characteristic(), 1);
 
 Any Riemannian geometry implements exp, log, parallel transport, and projection.
 Concrete implementations exist for the Poincare ball, Lorentz hyperboloid,
-SO(3), and SE(3). The `optim` module provides Riemannian SGD and Adam that
-work with any `Manifold` implementation.
+SO(3), and SE(3). Riemannian optimizers (SGD, Adam) that work with any
+`Manifold` implementation live in the `descend` crate (`descend::riemannian`);
+the in-crate `optim` module is deprecated and re-exports them for compatibility.
 
 ## Boundary matrix format
 
