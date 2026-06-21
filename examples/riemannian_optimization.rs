@@ -1,8 +1,8 @@
 #![allow(deprecated)]
-//! Riemannian optimization on the unit sphere S^2.
+//! Compatibility example for Riemannian optimization re-exports.
 //!
-//! Demonstrates Riemannian SGD finding the point on S^2 closest to a target,
-//! printing geodesic distance at each step to show convergence.
+//! The canonical implementations now live in `descend::riemannian`; `skel`
+//! keeps these re-exports so older import paths continue to compile.
 
 use ndarray::{array, Array1, ArrayView1};
 use skel::optim::{

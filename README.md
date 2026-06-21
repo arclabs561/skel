@@ -3,8 +3,7 @@
 [![crates.io](https://img.shields.io/crates/v/skel.svg)](https://crates.io/crates/skel)
 [![Documentation](https://docs.rs/skel/badge.svg)](https://docs.rs/skel)
 
-Topology and manifold primitives for topological data analysis and
-geometric ML.
+Topology and manifold primitives.
 
 ## Modules
 
@@ -81,7 +80,7 @@ All examples in `examples/`. Run with `cargo run --example <name>`.
 | `simplicial_complex` | Boundary matrices, Betti numbers of a tetrahedron surface (S^2) |
 | `vietoris_rips` | Build VR complexes from a 2D point cloud, sweep epsilon to see topology change |
 | `manifold_circle` | `Manifold` impl for S^1: exp/log round-trip, geodesic interpolation |
-| `riemannian_optimization` | Riemannian SGD and Adam converging on S^2 |
+| `riemannian_optimization` | Compatibility re-exports for Riemannian SGD and Adam |
 
 ## License
 

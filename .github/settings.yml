@@ -2,7 +2,7 @@
 # https://github.com/repository-settings/app
 
 repository:
-  description: "Topology and manifold primitives for TDA and geometric ML"
+  description: "Topology and manifold primitives"
   homepage: "https://github.com/arclabs561/skel"
   private: false
   has_issues: true
@@ -16,6 +16,7 @@ repository:
 
   topics:
     - rust
+    - manifold
     - simplex
     - tda
     - topology

@@ -7,7 +7,7 @@
 //!    well-defined.
 //! 2. **Riemannian manifold interface** ([`manifold`] / [`Manifold`]) -- the minimal
 //!    trait surface (exponential map, logarithmic map, parallel transport) required
-//!    by downstream crates such as `hyp` (hyperbolic geometry).
+//!    by downstream crates such as `hyperball`.
 //!
 //! ## Quick start
 //!

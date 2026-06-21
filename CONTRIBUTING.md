@@ -1,6 +1,6 @@
 # Contributing to skel
 
-Thanks for your interest. skel is topology and manifold primitives for TDA and geometric ML.
+Thanks for your interest. skel is topology and manifold primitives.
 
 ## Before you start
 
