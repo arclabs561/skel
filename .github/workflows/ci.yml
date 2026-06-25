@@ -21,6 +21,8 @@ jobs:
         run: cargo clippy --all-targets -- -D warnings
       - name: test
         run: cargo test --all-targets
+      - name: run example assertions
+        run: cargo run --example simplicial_complex
 
       - name: Semver check
         if: github.event_name == 'pull_request'
