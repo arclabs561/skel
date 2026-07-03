@@ -81,6 +81,8 @@ All examples in `examples/`. Run with `cargo run --example <name>`.
 | `vietoris_rips` | Build VR complexes from a 2D point cloud, sweep epsilon to see topology change |
 | `manifold_circle` | `Manifold` impl for S^1: exp/log round-trip, geodesic interpolation |
 | `riemannian_optimization` | Compatibility re-exports for Riemannian SGD and Adam |
+| `persistence_reduction` | Persistent homology by reducing a filtration boundary matrix |
+| `rotor_rotation` | Geometric-algebra rotor rotation in 2D |
 
 ## License
 
