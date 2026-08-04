@@ -15,8 +15,9 @@ repository:
   delete_branch_on_merge: true
 
   topics:
-    - rust
     - manifold
+    - riemannian-optimization
+    - rust
     - simplex
     - tda
     - topology
