@@ -2,13 +2,22 @@
 name = "skel"
 version = "0.1.7"
 edition = "2021"
+rust-version = "1.75"
 license = "MIT OR Apache-2.0"
 publish = true
 description = "Topology and manifold primitives"
 repository = "https://github.com/arclabs561/skel"
 homepage = "https://github.com/arclabs561/skel"
-documentation = "https://github.com/arclabs561/skel#readme"
+documentation = "https://docs.rs/skel"
 readme = "README.md"
+include = [
+  "/src/**/*.rs",
+  "/examples/**/*.rs",
+  "/Cargo.toml",
+  "/CHANGELOG.md",
+  "/LICENSE*",
+  "/README.md",
+]
 keywords = ["topology", "simplex", "tda"]
 categories = ["algorithms", "mathematics", "science"]
 
