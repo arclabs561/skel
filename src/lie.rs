@@ -139,7 +139,7 @@ pub fn log_so3(r: &RotationMatrix) -> AxisAngle {
         let (idx, &max_val) = sym
             .iter()
             .enumerate()
-            .max_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+            .max_by(|(_, a), (_, b)| a.total_cmp(b))
             .unwrap();
         let scale = (max_val / 2.0).max(0.0).sqrt();
         let mut axis = [0.0; 3];
