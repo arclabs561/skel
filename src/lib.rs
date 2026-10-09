@@ -47,6 +47,11 @@
 //! | [`flow`]          | Cohomological flow scaffolding (WIP) |
 //! | [`locus`]         | Back-compat shim; prefer `skel::Manifold` |
 
+// Compile and run the README's Rust examples as doctests.
+#[cfg(doctest)]
+#[doc = include_str!("../README.md")]
+struct ReadmeDoctests;
+
 pub mod complex;
 pub mod filtration;
 pub mod flow;
