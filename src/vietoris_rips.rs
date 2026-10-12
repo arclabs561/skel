@@ -64,6 +64,14 @@ pub fn vietoris_rips(
         "distances must be an n×n matrix (n={n}, got len={})",
         distances.len()
     );
+    for (index, distance) in distances.iter().enumerate() {
+        assert!(
+            !distance.is_nan(),
+            "distance[{},{}] is NaN",
+            index / n,
+            index % n
+        );
+    }
 
     let mut filt: Filtration<OrdF64> = Filtration::new();
 
@@ -91,7 +99,6 @@ pub fn vietoris_rips(
     for i in 0..n {
         for j in (i + 1)..n {
             let d = distances[i * n + j];
-            assert!(!d.is_nan(), "distance[{i},{j}] is NaN");
             if d <= max_radius {
                 let vertices = vec![i, j];
                 let simplex = Simplex::new_checked(vertices.clone()).unwrap();
@@ -173,6 +180,35 @@ mod tests {
         for v in 0..3 {
             assert!(filt.complex().contains(&s(&[v])));
         }
+    }
+
+    #[test]
+    fn rejects_nan_in_every_matrix_position_at_every_dimension() {
+        for max_dim in [0, 1, 2] {
+            for position in 0..9 {
+                let mut distances = equilateral(1.0);
+                distances[position] = f64::NAN;
+                assert!(
+                    std::panic::catch_unwind(|| {
+                        vietoris_rips(&distances, 3, max_dim, f64::INFINITY)
+                    })
+                    .is_err(),
+                    "NaN at matrix position {position} accepted with max_dim={max_dim}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn infinite_distances_remain_supported() {
+        let distances = equilateral(f64::INFINITY);
+        let vertices = vietoris_rips(&distances, 3, 0, f64::INFINITY);
+        assert_eq!(vertices.complex().len(), 3);
+        let disconnected = vietoris_rips(&distances, 3, 2, 1.0);
+        assert_eq!(disconnected.complex().len(), 3);
+        let all = vietoris_rips(&distances, 3, 2, f64::INFINITY);
+        assert_eq!(all.complex().len(), 7);
+        assert_eq!(all.value(&s(&[0, 1])).unwrap().value(), f64::INFINITY);
     }
 
     #[test]
