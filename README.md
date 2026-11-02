@@ -36,7 +36,7 @@ let mut filt = vietoris_rips(&distances, 3, 2, 2.0);
 assert_eq!(filt.complex().len(), 7);
 assert_eq!(filt.complex().euler_characteristic(), 1); // disk
 
-// Boundary matrix ready for persistent homology (lophat, phlite)
+// Sparse boundary matrix, one column per simplex in filtration order
 let bm = filt.boundary_matrix();
 assert_eq!(bm.len(), 7);
 ```
@@ -69,10 +69,18 @@ for compatibility.
 
 ## Boundary matrix format
 
-`Filtration::boundary_matrix()` returns `Vec<Vec<(i32, usize)>>` -- sparse
-columns of (coefficient, row_index) pairs. This is compatible with
-[lophat](https://crates.io/crates/lophat) and
-[phlite](https://crates.io/crates/phlite) for computing persistent homology.
+`Filtration::boundary_matrix()` returns `Vec<Vec<(i32, usize)>>`: sparse
+columns of (coefficient, row_index) pairs, in filtration order. skel does not
+reduce the matrix itself; the `persistence_reduction` example does the column
+reduction over F_2 for a filtered triangle:
+
+```text
+Intervals:
+  H_0: [0.0, inf) born at [0]
+  H_0: [0.0, 1.0) born at [1], killed by [0, 1]
+  H_0: [0.0, 1.0) born at [2], killed by [1, 2]
+  H_1: [2.0, 3.0) born at [0, 2], killed by [0, 1, 2]
+```
 
 ## Examples
 
