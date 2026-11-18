@@ -45,3 +45,27 @@ fn so3_log_of_nan_matrix_does_not_panic() {
     let r = [f64::NAN; 9];
     let _ = log_so3(&r);
 }
+
+#[test]
+fn so3_log_preserves_half_turns_and_the_shortest_arc() {
+    let pi = std::f64::consts::PI;
+    let axes = [[1.0_f64, 0.0, 0.0], [-1.0, 2.0, -3.0], [1.0, -1.0, 1.0]];
+    for axis in axes {
+        let norm = axis.iter().map(|v| v * v).sum::<f64>().sqrt();
+        for delta in [0.0, 1e-12, 1e-8, 1e-7, 1e-4] {
+            let omega = axis.map(|v| v / norm * (pi - delta));
+            let r = exp_so3(&omega);
+            let recovered = log_so3(&r);
+            for (actual, expected) in exp_so3(&recovered).iter().zip(r) {
+                assert!((actual - expected).abs() < 1e-12);
+            }
+            // Below pi the principal log has a unique sign, which decides
+            // the direction of geodesic interpolation.
+            if delta > 0.0 {
+                for (actual, expected) in recovered.iter().zip(omega) {
+                    assert!((actual - expected).abs() < 1e-12);
+                }
+            }
+        }
+    }
+}

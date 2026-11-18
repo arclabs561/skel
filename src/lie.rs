@@ -114,58 +114,40 @@ pub fn exp_so3(omega: &AxisAngle) -> RotationMatrix {
 /// For rotations near the identity (`theta ~ 0`), uses a Taylor expansion.
 /// For rotations near `pi`, extracts the axis from the symmetric part of `R`.
 pub fn log_so3(r: &RotationMatrix) -> AxisAngle {
-    // cos(theta) = (trace(R) - 1) / 2
-    let cos_theta = ((r[0] + r[4] + r[8]) - 1.0) / 2.0;
-    let cos_theta = cos_theta.clamp(-1.0, 1.0);
-    let theta = cos_theta.acos();
+    let skew = [r[7] - r[5], r[2] - r[6], r[3] - r[1]];
+    let sin_theta = 0.5 * skew.iter().map(|v| v * v).sum::<f64>().sqrt();
+    let cos_theta = ((r[0] + r[4] + r[8] - 1.0) / 2.0).clamp(-1.0, 1.0);
+    let theta = sin_theta.atan2(cos_theta);
 
-    if theta < SMALL_ANGLE {
-        // Near identity: R ~ I + theta * [omega_hat]_x
-        // Extract skew part directly (first-order).
-        let factor = 0.5 + theta * theta / 12.0; // Taylor of theta/(2*sin(theta))
-        return [
-            factor * (r[7] - r[5]), // (R[2,1] - R[1,2]) / 2
-            factor * (r[2] - r[6]), // (R[0,2] - R[2,0]) / 2
-            factor * (r[3] - r[1]), // (R[1,0] - R[0,1]) / 2
-        ];
-    }
-
-    if (std::f64::consts::PI - theta) < SMALL_ANGLE {
-        // Near pi: sin(theta) ~ 0, use symmetric part.
-        // R + R^T = 2 * cos(theta) * I + 2 * (1 - cos(theta)) * (n n^T)
-        // where n is the rotation axis.
-        let sym = [r[0] + 1.0, r[4] + 1.0, r[8] + 1.0]; // diagonal of R + I
-                                                        // Pick the largest diagonal element for numerical stability.
-        let (idx, &max_val) = sym
+    if cos_theta < 0.0 {
+        // For obtuse rotations, 1 - cos(theta) >= 1, while sin(theta)
+        // can approach zero. Recover nn^T from the symmetric part instead.
+        let diagonals = [r[0], r[4], r[8]];
+        let (i, &largest) = diagonals
             .iter()
             .enumerate()
             .max_by(|(_, a), (_, b)| a.total_cmp(b))
             .unwrap();
-        let scale = (max_val / 2.0).max(0.0).sqrt();
+        let one_minus_cos = 1.0 - cos_theta;
         let mut axis = [0.0; 3];
-        axis[idx] = scale;
-        // Off-diagonal: R[i,j] + R[j,i] = 2*(1 - cos(theta)) * n_i * n_j
-        let denom = 2.0 * scale;
-        if denom > SMALL_ANGLE {
-            for j in 0..3 {
-                if j != idx {
-                    // R[idx,j] + R[j,idx]
-                    let r_ij = r[idx * 3 + j];
-                    let r_ji = r[j * 3 + idx];
-                    axis[j] = (r_ij + r_ji) / (2.0 * denom);
-                }
+        axis[i] = ((largest - cos_theta) / one_minus_cos)
+            .sqrt()
+            .copysign(skew[i]);
+        let denom = 2.0 * one_minus_cos * axis[i];
+        for j in 0..3 {
+            if j != i {
+                axis[j] = (r[i * 3 + j] + r[j * 3 + i]) / denom;
             }
         }
-        return [axis[0] * theta, axis[1] * theta, axis[2] * theta];
+        return axis.map(|v| v * theta);
     }
 
-    // General case: theta / (2 * sin(theta)) * skew(R)
-    let factor = theta / (2.0 * theta.sin());
-    [
-        factor * (r[7] - r[5]),
-        factor * (r[2] - r[6]),
-        factor * (r[3] - r[1]),
-    ]
+    let factor = if theta < SMALL_ANGLE {
+        0.5 + theta * theta / 12.0
+    } else {
+        0.5 * theta / sin_theta
+    };
+    skew.map(|v| factor * v)
 }
 
 /// Geodesic (slerp) interpolation between two rotations on SO(3).
