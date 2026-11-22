@@ -44,7 +44,6 @@
 //! | [`manifold`]      | [`Manifold`] trait (exp/log/transport/project) |
 //! | [`lie`]           | SO(3) and SE(3) Lie group exp/log/geodesic interpolation |
 //! | [`optim`]         | Riemannian SGD, Adam, geodesic distance (deprecated -- moved to `descend::riemannian`) |
-//! | [`flow`]          | Cohomological flow scaffolding (WIP) |
 //! | [`locus`]         | Back-compat shim; prefer `skel::Manifold` |
 
 // Compile and run the README's Rust examples as doctests.
